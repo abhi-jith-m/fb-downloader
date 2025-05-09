@@ -62,6 +62,7 @@ GitPython==3.1.43
 google-pasta==0.2.0
 greenlet==3.1.1
 grpcio==1.68.1
+gunicorn==23.0.0
 h11 @ file:///C:/b/abs_1czwoyexjf/croot/h11_1706652332846/work
 h5py==3.13.0
 httpcore @ file:///C:/b/abs_55n7g233bw/croot/httpcore_1706728507241/work
