@@ -1,5 +1,6 @@
 import yt_dlp
 import os
+import time
 from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
@@ -16,17 +17,24 @@ def download():
         return jsonify({'error': 'No URL provided'}), 400
 
     try:
+        # Generate a unique filename using the current timestamp
+        timestamp = int(time.time())  # Get current time as an integer (timestamp)
+        video_filename = f"videoplayback_{timestamp}.mp4"  # Create unique filename
+        
         ydl_opts = {
             'format': 'best',
-            'outtmpl': 'static/videos/videoplayback.mp4',  # Always save as 'videoplayback.mp4'
+            'outtmpl': os.path.join('static', 'videos', video_filename),  # Save with unique filename
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(video_url, download=True)
-            return jsonify({'success': True, 'filename': 'videoplayback.mp4'})
+
+        # Return the path to the downloaded video (can be used in frontend)
+        return jsonify({'success': True, 'filename': video_filename})
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    os.makedirs('static/videos', exist_ok=True)
+    os.makedirs('static/videos', exist_ok=True)  # Ensure the 'static/videos' directory exists
     app.run(debug=True)
