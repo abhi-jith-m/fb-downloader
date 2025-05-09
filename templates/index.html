@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FB Video Downloader</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Facebook Video Downloader</h1>
+    
+    <div class="card p-4 shadow-sm">
+      <form id="videoForm">
+        <div class="mb-3">
+          <input type="url" class="form-control" id="videoUrl" placeholder="Paste Facebook video URL" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Download</button>
+      </form>
+
+      <div id="loading" class="text-center mt-3 d-none">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2">Fetching video...</p>
+      </div>
+
+      <div id="videoSection" class="mt-4 d-none">
+        <video id="videoPlayer" class="w-100 rounded" controls></video>
+        <a id="downloadLink" class="btn btn-success mt-3" download>Download Video</a>
+      </div>
+
+      <div id="errorMsg" class="alert alert-danger mt-3 d-none"></div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('videoForm');
+    const loading = document.getElementById('loading');
+    const videoSection = document.getElementById('videoSection');
+    const videoPlayer = document.getElementById('videoPlayer');
+    const downloadLink = document.getElementById('downloadLink');
+    const errorMsg = document.getElementById('errorMsg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = document.getElementById('videoUrl').value;
+
+      loading.classList.remove('d-none');
+      videoSection.classList.add('d-none');
+      errorMsg.classList.add('d-none');
+
+      try {
+        const res = await fetch('/download', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({url}),
+        });
+        const data = await res.json();
+
+        loading.classList.add('d-none');
+
+        if (data.success) {
+          const videoPath = `/static/videos/${data.filename}`;
+          videoPlayer.src = videoPath;
+          downloadLink.href = videoPath;
+          downloadLink.download = data.filename;
+          videoSection.classList.remove('d-none');
+        } else {
+          throw new Error(data.error || 'Unknown error occurred.');
+        }
+      } catch (err) {
+        loading.classList.add('d-none');
+        errorMsg.textContent = err.message;
+        errorMsg.classList.remove('d-none');
+      }
+    });
+  </script>
+</body>
+</html>
