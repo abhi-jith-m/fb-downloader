@@ -6,10 +6,10 @@ from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
-# Function to generate a random unique ID
-def generate_unique_id(length=12):
-    characters = string.ascii_letters + string.digits
-    return ''.join(random.choice(characters) for _ in range(length))
+# Function to generate a random string of fixed length
+def generate_unique_id(length=8):
+    letters_and_digits = string.ascii_letters + string.digits
+    return ''.join(random.choice(letters_and_digits) for i in range(length))
 
 @app.route('/')
 def index():
@@ -23,23 +23,24 @@ def download():
         return jsonify({'error': 'No URL provided'}), 400
 
     try:
-        # Generate a unique filename using the random ID
-        unique_id = generate_unique_id()
-        filename = f"static/videos/{unique_id}.mp4"
-
-        # yt-dlp options for downloading the video with a unique filename
+        # Generate a unique random ID
+        unique_id = generate_unique_id()  # Generate a random string for uniqueness
+        video_filename = f"videoplayback_{unique_id}.mp4"  # Use unique ID in filename
+        
         ydl_opts = {
             'format': 'best',
-            'outtmpl': filename,  # Use the generated unique filename
+            'outtmpl': os.path.join('static', 'videos', video_filename),  # Save with unique filename
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            ydl.extract_info(video_url, download=True)
+            info_dict = ydl.extract_info(video_url, download=True)
 
-        return jsonify({'success': True, 'filename': filename})
+        # Return the path to the downloaded video (can be used in frontend)
+        return jsonify({'success': True, 'filename': video_filename})
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    os.makedirs('static/videos', exist_ok=True)
+    os.makedirs('static/videos', exist_ok=True)  # Ensure the 'static/videos' directory exists
     app.run(debug=True)
