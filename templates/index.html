@@ -3,57 +3,683 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FB Video Downloader</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <title>Video Downloader</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary-color: #b142f5;
+      --secondary-color: #8c1bdb;
+      --accent-color: #f72585;
+      --success-color: #4cc9f0;
+      --dark-color: #121212;
+      --darker-color: #0a0a0a;
+      --light-color: #e0e0e0;
+      --dark-text: #333333;
+      --card-bg: #ffffff;
+    }
+    
+    body {
+      background-color: var(--dark-color);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      position: relative;
+      overflow-x: hidden;
+      color: var(--light-color);
+    }
+
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    
+    .app-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .app-header {
+      text-align: center;
+      padding: 20px 0;
+    }
+    
+    .app-title {
+      color: var(--primary-color);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    
+    .app-subtitle {
+      color: var(--light-color);
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+    
+    .main-card {
+      background-color: var(--card-bg);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      border: none;
+      color: var(--dark-text);
+    }
+    
+    .platform-selection {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    .platform-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 80px;
+      padding: 10px;
+      border-radius: 12px;
+    }
+    
+    .platform-option:hover {
+      transform: translateY(-5px);
+      background-color: rgba(177, 66, 245, 0.1);
+    }
+    
+    .platform-icon {
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      font-size: 24px;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .platform-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--dark-text);
+    }
+    
+    .youtube {
+      background-color: #FF0000;
+    }
+    
+    .facebook {
+      background-color: #1877F2;
+    }
+    
+    .instagram {
+      background-color: #E4405F;
+    }
+    
+    .tiktok {
+      background-color: #000000;
+    }
+    
+    .twitter {
+      background-color: #1DA1F2;
+    }
+    
+    .platform-option.active {
+      background-color: rgba(177, 66, 245, 0.2);
+    }
+    
+    .platform-option.active .platform-name {
+      color: var(--primary-color);
+      font-weight: 700;
+    }
+    
+    .input-group {
+      position: relative;
+      margin-bottom: 25px;
+    }
+    
+    .url-input {
+      height: 60px;
+      border-radius: 12px;
+      border: 2px solid #e1e4e8;
+      background-color: #ffffff;
+      color: var(--dark-text);
+      padding-left: 20px;
+      padding-right: 20px;
+      font-size: 1.1rem;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+    
+    .url-input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(177, 66, 245, 0.1);
+      outline: none;
+    }
+    
+    .url-input::placeholder {
+      color: #8a8a8a;
+    }
+    
+    .download-options {
+      background-color: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #e1e4e8;
+    }
+    
+    .form-label {
+      color: var(--dark-text);
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .form-select {
+      height: 45px;
+      border-radius: 8px;
+      border: 2px solid #e1e4e8;
+      font-size: 0.95rem;
+      width: 100%;
+      transition: all 0.3s ease;
+      background-color: white;
+      color: var(--dark-text);
+    }
+    
+    .form-select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(177, 66, 245, 0.1);
+      outline: none;
+    }
+    
+    .submit-btn {
+      height: 55px;
+      border-radius: 12px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      width: 100%;
+      border: none;
+    }
+    
+    .submit-btn:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+    
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+    
+    .loading-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 0;
+    }
+    
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(177, 66, 245, 0.1);
+      border-top-color: var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+    
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    
+    .loading-text {
+      font-size: 1.1rem;
+      color: var(--dark-text);
+      font-weight: 500;
+    }
+    
+    .video-result {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .video-container {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      border: 1px solid #e1e4e8;
+    }
+    
+    .video-player {
+      width: 100%;
+      display: block;
+      background-color: #0a0a0a;
+    }
+    
+    .download-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background-color: var(--success-color);
+      color: white;
+      padding: 12px 30px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .download-btn:hover {
+      background-color: #3db8db;
+      transform: translateY(-2px);
+      color: white;
+    }
+    
+    .error-message {
+      background-color: #ffebee;
+      color: #c62828;
+      padding: 15px;
+      border-radius: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid #ffcdd2;
+    }
+    
+    .feature-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    
+    .feature-card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border: none;
+      color: var(--dark-text);
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .feature-icon {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(177, 66, 245, 0.1);
+      color: var(--primary-color);
+      font-size: 20px;
+      border-radius: 12px;
+      margin: 0 auto 15px;
+    }
+    
+    .feature-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--dark-text);
+    }
+    
+    .feature-desc {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 20px 0;
+      color: #8a8a8a;
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 768px) {
+      .app-container {
+        padding: 10px;
+      }
+      
+      .main-card {
+        padding: 20px;
+      }
+      
+      .platform-selection {
+        gap: 10px;
+      }
+      
+      .platform-option {
+        width: 70px;
+      }
+      
+      .url-input, .submit-btn {
+        height: 50px;
+        font-size: 1rem;
+      }
+      
+      .feature-section {
+        grid-template-columns: 1fr;
+      }
+      
+      .download-options {
+        padding: 15px;
+      }
+      
+      .form-select {
+        height: 40px;
+        font-size: 0.9rem;
+      }
+      
+      .col-md-4 {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="container mt-5">
-    <h1 class="text-center mb-4">Facebook Video Downloader</h1>
+  <div id="particles-js"></div>
+  
+  <div class="app-container">
+    <div class="app-header">
+      <h1 class="app-title">Video Downloader Pro</h1>
+      <p class="app-subtitle">Download videos from multiple platforms in high quality</p>
+    </div>
     
-    <div class="card p-4 shadow-sm">
-      <form id="videoForm">
-        <div class="mb-3">
-          <input type="url" class="form-control" id="videoUrl" placeholder="Paste Facebook video URL" required>
+    <div class="main-card">
+      <div class="platform-selection">
+        <div class="platform-option" data-platform="youtube">
+          <div class="platform-icon youtube">
+            <i class="fab fa-youtube"></i>
+          </div>
+          <span class="platform-name">YouTube</span>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Download</button>
+        <div class="platform-option" data-platform="facebook">
+          <div class="platform-icon facebook">
+            <i class="fab fa-facebook-f"></i>
+          </div>
+          <span class="platform-name">Facebook</span>
+        </div>
+        <div class="platform-option" data-platform="instagram">
+          <div class="platform-icon instagram">
+            <i class="fab fa-instagram"></i>
+          </div>
+          <span class="platform-name">Instagram</span>
+        </div>
+      </div>
+      
+      <form id="videoForm">
+        <div class="input-group mb-4">
+          <input type="url" class="url-input" id="videoUrl" placeholder="Paste your video URL here" required>
+        </div>
+        
+        <div class="download-options mb-4">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label for="videoFormat" class="form-label fw-bold">Video Format</label>
+              <select class="form-select" id="videoFormat">
+                <option value="mp4" selected>MP4</option>
+                <option value="webm">WebM</option>
+                <option value="mkv">MKV</option>
+                <option value="flv">FLV</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="audioFormat" class="form-label fw-bold">Audio Format</label>
+              <select class="form-select" id="audioFormat">
+                <option value="best" selected>Best Quality</option>
+                <option value="mp3">MP3</option>
+                <option value="aac">AAC</option>
+                <option value="wav">WAV</option>
+                <option value="m4a">M4A</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="videoQuality" class="form-label fw-bold">Video Quality</label>
+              <select class="form-select" id="videoQuality">
+                <option value="best" selected>Best Quality</option>
+                <option value="1080">1080p</option>
+                <option value="720">720p</option>
+                <option value="480">480p</option>
+                <option value="360">360p</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-download me-2"></i> Download Video
+        </button>
       </form>
-
-      <div id="loading" class="text-center mt-3 d-none">
-        <div class="spinner-border text-primary" role="status"></div>
-        <p class="mt-2">Fetching video...</p>
+      
+      <div id="loading" class="loading-section d-none">
+        <div class="spinner"></div>
+        <p class="loading-text">Fetching your video...</p>
       </div>
-
-      <div id="videoSection" class="mt-4 d-none">
-        <video id="videoPlayer" class="w-100 rounded" controls></video>
-        <a id="downloadLink" class="btn btn-success mt-3" download>Download Video</a>
+      
+      <div id="errorMsg" class="error-message mt-4 d-none">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="errorText">Error message here</span>
       </div>
-
-      <div id="errorMsg" class="alert alert-danger mt-3 d-none"></div>
+      
+      <div id="videoSection" class="video-result mt-4 d-none">
+        <div class="video-container">
+          <video id="videoPlayer" class="video-player" controls></video>
+        </div>
+        <a id="downloadLink" class="download-btn" download>
+          <i class="fas fa-download"></i> Download Video
+        </a>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <p>© 2025 Video Downloader Pro. All rights reserved.</p>
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
   <script>
-    const form = document.getElementById('videoForm');
+    // Particles.js configuration
+    particlesJS('particles-js', {
+      "particles": {
+        "number": {
+          "value": 80,
+          "density": {
+            "enable": true,
+            "value_area": 800
+          }
+        },
+        "color": {
+          "value": "#b142f5"
+        },
+        "shape": {
+          "type": "circle",
+          "stroke": {
+            "width": 0,
+            "color": "#000000"
+          },
+          "polygon": {
+            "nb_sides": 5
+          }
+        },
+        "opacity": {
+          "value": 0.5,
+          "random": true,
+          "anim": {
+            "enable": true,
+            "speed": 1,
+            "opacity_min": 0.1,
+            "sync": false
+          }
+        },
+        "size": {
+          "value": 3,
+          "random": true,
+          "anim": {
+            "enable": true,
+            "speed": 2,
+            "size_min": 0.1,
+            "sync": false
+          }
+        },
+        "line_linked": {
+          "enable": true,
+          "distance": 150,
+          "color": "#9921e8",
+          "opacity": 0.4,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 1,
+          "direction": "none",
+          "random": true,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": false,
+          "attract": {
+            "enable": false,
+            "rotateX": 600,
+            "rotateY": 1200
+          }
+        }
+      },
+      "interactivity": {
+        "detect_on": "window",
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "grab"
+          },
+          "onclick": {
+            "enable": true,
+            "mode": "push"
+          },
+          "resize": true
+        },
+        "modes": {
+          "grab": {
+            "distance": 140,
+            "line_linked": {
+              "opacity": 1
+            }
+          },
+          "bubble": {
+            "distance": 400,
+            "size": 40,
+            "duration": 2,
+            "opacity": 8,
+            "speed": 3
+          },
+          "repulse": {
+            "distance": 200,
+            "duration": 0.4
+          },
+          "push": {
+            "particles_nb": 4
+          },
+          "remove": {
+            "particles_nb": 2
+          }
+        }
+      },
+      "retina_detect": true
+    });
+
+    // Platform selection functionality
+    const platformOptions = document.querySelectorAll('.platform-option');
+    let selectedPlatform = null;
+
+    platformOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        platformOptions.forEach(opt => opt.classList.remove('active'));
+        option.classList.add('active');
+        selectedPlatform = option.dataset.platform;
+      });
+    });
+
+    // Form submission handling
+    const videoForm = document.getElementById('videoForm');
     const loading = document.getElementById('loading');
     const videoSection = document.getElementById('videoSection');
     const videoPlayer = document.getElementById('videoPlayer');
     const downloadLink = document.getElementById('downloadLink');
     const errorMsg = document.getElementById('errorMsg');
+    const errorText = document.getElementById('errorText');
 
-    form.addEventListener('submit', async (e) => {
+    // URL validation function
+    function validateUrl(url, platform) {
+      const urlPatterns = {
+        youtube: /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/i,
+        facebook: /^(https?:\/\/)?(www\.)?(facebook\.com|fb\.com|fb\.watch)\/.+/i,
+        instagram: /^(https?:\/\/)?(www\.)?(instagram\.com)\/.+/i
+      };
+      
+      return urlPatterns[platform].test(url);
+    }
+
+    videoForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const url = document.getElementById('videoUrl').value;
+
+      if (!selectedPlatform) {
+        errorText.textContent = 'Please select a platform first';
+        errorMsg.classList.remove('d-none');
+        return;
+      }
+      
+      // Check if URL matches the selected platform
+      if (!validateUrl(url, selectedPlatform)) {
+        errorText.textContent = `Invalid URL for ${selectedPlatform}. Please enter a valid ${selectedPlatform} URL.`;
+        errorMsg.classList.remove('d-none');
+        return;
+      }
 
       loading.classList.remove('d-none');
       videoSection.classList.add('d-none');
       errorMsg.classList.add('d-none');
 
       try {
+        // Get format and quality selections
+        const videoFormat = document.getElementById('videoFormat').value;
+        const audioFormat = document.getElementById('audioFormat').value;
+        const videoQuality = document.getElementById('videoQuality').value;
+        
         const res = await fetch('/download', {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({url}),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            url, 
+            platform: selectedPlatform,
+            videoFormat,
+            audioFormat,
+            videoQuality
+          }),
         });
         const data = await res.json();
 
@@ -65,12 +691,15 @@
           downloadLink.href = videoPath;
           downloadLink.download = data.filename;
           videoSection.classList.remove('d-none');
+          
+          // Scroll to video section
+          videoSection.scrollIntoView({ behavior: 'smooth' });
         } else {
-          throw new Error(data.error || 'Unknown error occurred.');
+          throw new Error(data.error || 'An error occurred while processing your request');
         }
       } catch (err) {
         loading.classList.add('d-none');
-        errorMsg.textContent = err.message;
+        errorText.textContent = err.message;
         errorMsg.classList.remove('d-none');
       }
     });
