@@ -18,6 +18,60 @@
       --dark-text: #333333;
       --card-bg: #ffffff;
     }
+
+    /* Add these to your existing CSS */
+.progress {
+    height: 20px;
+    border-radius: 10px;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: var(--primary-color);
+    transition: width .6s ease;
+    border-radius: 10px;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-label {
+    color: var(--dark-text);
+}
+
+#bulkUrls {
+    min-height: 120px;
+    resize: vertical;
+    padding: 15px;
+    font-family: monospace;
+}
+
+.list-group-item {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    margin-bottom: 5px;
+    border-radius: 8px !important;
+}
+
+#bulkResultsList {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+}
     
     body {
       background-color: var(--dark-color);
@@ -432,10 +486,28 @@
           <span class="platform-name">Instagram</span>
         </div>
       </div>
-      
+
       <form id="videoForm">
-        <div class="input-group mb-4">
+        <!-- Download type toggle buttons -->
+        <div class="download-type-toggle mb-4 text-center">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="downloadType" id="singleDownload" value="single" checked>
+            <label class="form-check-label" for="singleDownload">Single URL</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="downloadType" id="bulkDownload" value="bulk">
+            <label class="form-check-label" for="bulkDownload">Bulk Download</label>
+          </div>
+        </div>
+
+        <!-- Single URL input (default) -->
+        <div id="singleUrlContainer" class="input-group mb-4">
           <input type="url" class="url-input" id="videoUrl" placeholder="Paste your video URL here" required>
+        </div>
+
+        <!-- Bulk URLs input (hidden by default) -->
+        <div id="bulkUrlContainer" class="input-group mb-4 d-none">
+          <textarea class="url-input" id="bulkUrls" rows="5" placeholder="Paste multiple URLs, one per line"></textarea>
         </div>
         
         <div class="download-options mb-4">
@@ -485,6 +557,18 @@
       <div id="errorMsg" class="error-message mt-4 d-none">
         <i class="fas fa-exclamation-circle"></i>
         <span id="errorText">Error message here</span>
+      </div>
+      
+      <!-- Bulk progress section -->
+      <div id="bulkProgressSection" class="mt-4 d-none">
+        <h4 class="text-center mb-3">Bulk Download Progress</h4>
+        <div class="progress mb-3">
+          <div id="bulkProgressBar" class="progress-bar bg-primary" role="progressbar" style="width: 0%">0%</div>
+        </div>
+        <div id="bulkStatusText" class="text-center mb-3">Preparing...</div>
+        <div id="bulkResults" class="mt-3">
+          <ul id="bulkResultsList" class="list-group"></ul>
+        </div>
       </div>
       
       <div id="videoSection" class="video-result mt-4 d-none">
@@ -623,86 +707,259 @@
       });
     });
 
-    // Form submission handling
+    // Function to validate URL based on platform
+    function validateUrl(url, platform) {
+      if (!url) return false;
+      
+      try {
+        new URL(url);
+      } catch (e) {
+        return false;
+      }
+      
+      // Basic platform-specific validation
+      if (platform === 'youtube') {
+        return url.includes('youtube.com') || url.includes('youtu.be');
+      } else if (platform === 'facebook') {
+        return url.includes('facebook.com') || url.includes('fb.watch');
+      } else if (platform === 'instagram') {
+        return url.includes('instagram.com');
+      }
+      
+      return true;
+    }
+
+    // Download type toggle functionality
+    const singleDownload = document.getElementById('singleDownload');
+    const bulkDownload = document.getElementById('bulkDownload');
+    const singleUrlContainer = document.getElementById('singleUrlContainer');
+    const bulkUrlContainer = document.getElementById('bulkUrlContainer');
+    const bulkProgressSection = document.getElementById('bulkProgressSection');
+    const bulkProgressBar = document.getElementById('bulkProgressBar');
+    const bulkStatusText = document.getElementById('bulkStatusText');
+    const bulkResultsList = document.getElementById('bulkResultsList');
     const videoForm = document.getElementById('videoForm');
     const loading = document.getElementById('loading');
+    const errorMsg = document.getElementById('errorMsg');
+    const errorText = document.getElementById('errorText');
     const videoSection = document.getElementById('videoSection');
     const videoPlayer = document.getElementById('videoPlayer');
     const downloadLink = document.getElementById('downloadLink');
-    const errorMsg = document.getElementById('errorMsg');
-    const errorText = document.getElementById('errorText');
 
-    // URL validation function
-    function validateUrl(url, platform) {
-      const urlPatterns = {
-        youtube: /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/i,
-        facebook: /^(https?:\/\/)?(www\.)?(facebook\.com|fb\.com|fb\.watch)\/.+/i,
-        instagram: /^(https?:\/\/)?(www\.)?(instagram\.com)\/.+/i
-      };
-      
-      return urlPatterns[platform].test(url);
-    }
+    // Toggle between single and bulk download modes
+    singleDownload.addEventListener('change', () => {
+      if (singleDownload.checked) {
+        singleUrlContainer.classList.remove('d-none');
+        bulkUrlContainer.classList.add('d-none');
+      }
+    });
 
+    bulkDownload.addEventListener('change', () => {
+      if (bulkDownload.checked) {
+        singleUrlContainer.classList.add('d-none');
+        bulkUrlContainer.classList.remove('d-none');
+      }
+    });
+
+    // Form submission handling
     videoForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const url = document.getElementById('videoUrl').value;
-
+      
       if (!selectedPlatform) {
         errorText.textContent = 'Please select a platform first';
         errorMsg.classList.remove('d-none');
         return;
       }
       
-      // Check if URL matches the selected platform
-      if (!validateUrl(url, selectedPlatform)) {
-        errorText.textContent = `Invalid URL for ${selectedPlatform}. Please enter a valid ${selectedPlatform} URL.`;
-        errorMsg.classList.remove('d-none');
-        return;
-      }
-
-      loading.classList.remove('d-none');
-      videoSection.classList.add('d-none');
-      errorMsg.classList.add('d-none');
-
-      try {
-        // Get format and quality selections
-        const videoFormat = document.getElementById('videoFormat').value;
-        const audioFormat = document.getElementById('audioFormat').value;
-        const videoQuality = document.getElementById('videoQuality').value;
+      // Get format and quality selections
+      const videoFormat = document.getElementById('videoFormat').value;
+      const audioFormat = document.getElementById('audioFormat').value;
+      const videoQuality = document.getElementById('videoQuality').value;
+      
+      // Check if it's single or bulk download
+      if (singleDownload.checked) {
+        // Single download logic
+        const url = document.getElementById('videoUrl').value;
         
-        const res = await fetch('/download', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            url, 
-            platform: selectedPlatform,
-            videoFormat,
-            audioFormat,
-            videoQuality
-          }),
-        });
-        const data = await res.json();
-
-        loading.classList.add('d-none');
-
-        if (data.success) {
-          const videoPath = `/static/videos/${data.filename}`;
-          videoPlayer.src = videoPath;
-          downloadLink.href = videoPath;
-          downloadLink.download = data.filename;
-          videoSection.classList.remove('d-none');
-          
-          // Scroll to video section
-          videoSection.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          throw new Error(data.error || 'An error occurred while processing your request');
+        if (!validateUrl(url, selectedPlatform)) {
+          errorText.textContent = `Invalid URL for ${selectedPlatform}. Please enter a valid ${selectedPlatform} URL.`;
+          errorMsg.classList.remove('d-none');
+          return;
         }
-      } catch (err) {
-        loading.classList.add('d-none');
-        errorText.textContent = err.message;
-        errorMsg.classList.remove('d-none');
+        
+        loading.classList.remove('d-none');
+        videoSection.classList.add('d-none');
+        errorMsg.classList.add('d-none');
+        bulkProgressSection.classList.add('d-none');
+        
+        try {
+          const res = await fetch('/download', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              url, 
+              platform: selectedPlatform,
+              videoFormat,
+              audioFormat,
+              videoQuality
+            }),
+          });
+          const data = await res.json();
+          
+          loading.classList.add('d-none');
+          
+          if (data.success) {
+            const videoPath = `/static/videos/${data.filename}`;
+            videoPlayer.src = videoPath;
+            downloadLink.href = videoPath;
+            downloadLink.download = data.filename;
+            videoSection.classList.remove('d-none');
+            
+            // Scroll to video section
+            videoSection.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            throw new Error(data.error || 'An error occurred while processing your request');
+          }
+        } catch (err) {
+          loading.classList.add('d-none');
+          errorText.textContent = err.message;
+          errorMsg.classList.remove('d-none');
+        }
+      } else {
+        // Bulk download logic
+        const bulkUrlsText = document.getElementById('bulkUrls').value;
+        const urls = bulkUrlsText.split('\n').filter(url => url.trim() !== '');
+        
+        if (urls.length === 0) {
+          errorText.textContent = 'Please enter at least one URL';
+          errorMsg.classList.remove('d-none');
+          return;
+        }
+        
+        // Validate all URLs
+        const invalidUrls = urls.filter(url => !validateUrl(url.trim(), selectedPlatform));
+        if (invalidUrls.length > 0) {
+          errorText.textContent = `Found ${invalidUrls.length} invalid URLs for ${selectedPlatform}`;
+          errorMsg.classList.remove('d-none');
+          return;
+        }
+        
+        // Hide errors and show bulk progress section
+        errorMsg.classList.add('d-none');
+        loading.classList.remove('d-none');
+        bulkProgressSection.classList.remove('d-none');
+        bulkResultsList.innerHTML = '';
+        videoSection.classList.add('d-none');
+        
+        // Reset progress bar
+        updateBulkProgress(0, urls.length);
+        
+        try {
+          const results = await processBulkDownload(urls, selectedPlatform, videoFormat, audioFormat, videoQuality);
+          loading.classList.add('d-none');
+          
+          // Display results summary
+          const successCount = results.filter(r => r.success).length;
+          bulkStatusText.textContent = `Completed: ${successCount} of ${urls.length} downloads successful`;
+          
+          // Create download links for each successful download
+          results.forEach((result, index) => {
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+            
+            if (result.success) {
+              const videoPath = `/static/videos/${result.filename}`;
+              listItem.innerHTML = `
+                <span class="text-truncate" style="max-width: 70%;">URL ${index + 1}: Success</span>
+                <a href="${videoPath}" class="btn btn-sm btn-success" download="${result.filename}">
+                  <i class="fas fa-download me-1"></i> Download
+                </a>
+              `;
+            } else {
+              listItem.innerHTML = `
+                <span class="text-truncate" style="max-width: 70%;">URL ${index + 1}: Failed</span>
+                <span class="badge bg-danger">${result.error}</span>
+              `;
+            }
+            
+            bulkResultsList.appendChild(listItem);
+          });
+          
+          // Scroll to bulk results
+          bulkProgressSection.scrollIntoView({ behavior: 'smooth' });
+          
+        } catch (err) {
+          loading.classList.add('d-none');
+          errorText.textContent = err.message;
+          errorMsg.classList.remove('d-none');
+        }
       }
     });
+
+  function updateBulkProgress(current, total) {
+  const percentage = Math.round((current / total) * 100);
+  bulkProgressBar.style.width = `${percentage}%`;
+  bulkProgressBar.textContent = `${percentage}%`;
+  
+  if (current === 0) {
+    bulkStatusText.textContent = 'Starting downloads...';
+  } else if (current < total) {
+    bulkStatusText.textContent = `Processing: ${current} of ${total} (${percentage}%)`;
+  } else {
+    bulkStatusText.textContent = 'Download complete!';
+  }
+}
+
+// Function to process bulk downloads sequentially
+async function processBulkDownload(urls, platform, videoFormat, audioFormat, videoQuality) {
+  const results = [];
+  
+  for (let i = 0; i < urls.length; i++) {
+    const url = urls[i].trim();
+    updateBulkProgress(i, urls.length);
+    
+    try {
+      const res = await fetch('/download', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          url, 
+          platform,
+          videoFormat,
+          audioFormat,
+          videoQuality
+        }),
+      });
+      
+      const data = await res.json();
+      
+      if (data.success) {
+        results.push({
+          success: true,
+          url: url,
+          filename: data.filename
+        });
+      } else {
+        results.push({
+          success: false,
+          url: url,
+          error: data.error
+        });
+      }
+    } catch (err) {
+      results.push({
+        success: false,
+        url: url,
+        error: err.message
+      });
+    }
+  }
+  
+  // Update progress to complete
+  updateBulkProgress(urls.length, urls.length);
+  
+  return results;
+}
   </script>
 </body>
 </html>
