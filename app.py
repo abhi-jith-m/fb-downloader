@@ -27,6 +27,8 @@ def download():
         ydl_opts = {
             'format': 'best',
             'outtmpl': output_path,
+            cookiefile': 'instagram_cookies.txt'
+
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
