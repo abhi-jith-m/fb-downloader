@@ -1,127 +1,30 @@
-[
-{
-    "domain": ".instagram.com",
-    "expirationDate": 1781428334.519183,
-    "hostOnly": false,
-    "httpOnly": false,
-    "name": "csrftoken",
-    "path": "/",
-    "sameSite": "unspecified",
-    "secure": true,
-    "session": false,
-    "storeId": "0",
-    "value": "7Dg9GVrzcpspTlQfsii22Mm7eVv3pCJE",
-    "id": 1
-},
-{
-    "domain": ".instagram.com",
-    "expirationDate": 1781427768.664288,
-    "hostOnly": false,
-    "httpOnly": true,
-    "name": "datr",
-    "path": "/",
-    "sameSite": "no_restriction",
-    "secure": true,
-    "session": false,
-    "storeId": "0",
-    "value": "OhYfaD_EoJwkeoqCHUFSY2VF",
-    "id": 2
-},
-{
-    "domain": ".instagram.com",
-    "expirationDate": 1754644334.519473,
-    "hostOnly": false,
-    "httpOnly": false,
-    "name": "ds_user_id",
-    "path": "/",
-    "sameSite": "no_restriction",
-    "secure": true,
-    "session": false,
-    "storeId": "0",
-    "value": "74483124385",
-    "id": 3
-},
-{
-    "domain": ".instagram.com",
-    "expirationDate": 1778403773.322315,
-    "hostOnly": false,
-    "httpOnly": true,
-    "name": "ig_did",
-    "path": "/",
-    "sameSite": "unspecified",
-    "secure": true,
-    "session": false,
-    "storeId": "0",
-    "value": "F2E233C1-EE00-42AB-8B1F-C944349E14B9",
-    "id": 4
-},
-{
-    "domain": ".instagram.com",
-    "expirationDate": 1778403773.322348,
-    "hostOnly": false,
-    "httpOnly": false,
-    "name": "ig_nrcb",
-    "path": "/",
-    "sameSite": "unspecified",
-    "secure": true,
-    "session": false,
-    "storeId": "0",
-    "value": "1",
-    "id": 5
-},
-{
-    "domain": ".instagram.com",
-    "expirationDate": 1761804600.695571,
-    "hostOnly": false,
-    "httpOnly": true,
-    "name": "mid",
-    "path": "/",
-    "sameSite": "no_restriction",
-    "secure": true,
-    "session": false,
-    "storeId": "0",
-    "value": "ZvOpOQALAAGT3GORcs6FgWPzvOvs",
-    "id": 6
-},
-{
-    "domain": ".instagram.com",
-    "hostOnly": false,
-    "httpOnly": true,
-    "name": "rur",
-    "path": "/",
-    "sameSite": "lax",
-    "secure": true,
-    "session": true,
-    "storeId": "0",
-    "value": "\"CCO\\05474483124385\\0541778404336:01f743dcfc4e76e5cf071315eca32d20a6b94af5e29cc849809b4b549c1ee5850cfa515c\"",
-    "id": 7
-},
-{
-    "domain": ".instagram.com",
-    "expirationDate": 1778403959.79163,
-    "hostOnly": false,
-    "httpOnly": true,
-    "name": "sessionid",
-    "path": "/",
-    "sameSite": "unspecified",
-    "secure": true,
-    "session": false,
-    "storeId": "0",
-    "value": "74483124385%3AFymSKICdLqkjN2%3A17%3AAYdCfxPkjgtjfMf9NY4RTy8L7lN4vbGTaaW35WJ-sA",
-    "id": 8
-},
-{
-    "domain": ".instagram.com",
-    "expirationDate": 1747473086,
-    "hostOnly": false,
-    "httpOnly": false,
-    "name": "wd",
-    "path": "/",
-    "sameSite": "lax",
-    "secure": true,
-    "session": false,
-    "storeId": "0",
-    "value": "1366x645",
-    "id": 9
-}
-]
+# Netscape HTTP Cookie File
+# http://curl.haxx.se/rfc/cookie_spec.html
+# This is a generated file!  Do not edit.
+
+.google.com	TRUE	/	TRUE	1770080848	__Secure-ENID	24.SE=n95tTvEgZwVMkcGhSDGciowJJyeDWbc5UnbwHEJfFJJBNqM02eqhN4JebG0mfkLaghkXafhjpVvg_i_WKyc4s6dwrJiG7bM8P-_RRg6C69wtWk7XqkegfS4R2kbzsBqL4w3JN7NpVs7iAEll5tAa2xS6g1Vx5ubKQ_py_PymkOWf8iI-sgkDx6b45Zi4gBHvNz53kvcX4gOXZFv-HnvWlJBJ6sHmhpZcU01QRbhDtwH2XgjIehPGn4Y9OE0yBNhyTtvhBO33KiiFynvae1KNIEeA_UmU2ZGbBWTdkau8qfw8pbvrAQYxIL5afANjWua6NDpimJ6U7OHYk5dJQMFP8DOsjTbE0i8QKxLv9n9Sc1xn0pEKFgAlvKPNhgpoJ4RHnRX9E2k-7oo95pKb-gK7xteH
+.google.com	TRUE	/	FALSE	0	S	billing-ui-v3=c3snVKF9cmZLN4oGVVrOKBpG05o1TRq5:billing-ui-v3-efe=c3snVKF9cmZLN4oGVVrOKBpG05o1TRq5
+.google.com	TRUE	/	FALSE	1759401646	SEARCH_SAMESITE	CgQI150B
+.chromewebstore.google.com	TRUE	/	FALSE	1781429758	_ga	GA1.1.47696659.1743949718
+.chromewebstore.google.com	TRUE	/	FALSE	1778509722	_ga_B79QGDJJ5D	GS1.1.1743949718.1.0.1743949722.0.0.0
+.google.com	TRUE	/	FALSE	1780670604	SID	g.a000wQirXZEsFcVKymJ5Y9-IL8dog-c4gpkU69fn2BQ5w2LJj8VKt_bwcYFvLgC4IPbk8-DhLQACgYKAdwSARASFQHGX2Mieg-C3247AO4iMAYGyh5hJRoVAUF8yKp7U8oJUpMFSG3oDotunf_U0076
+.google.com	TRUE	/	TRUE	1780670604	__Secure-1PSID	g.a000wQirXZEsFcVKymJ5Y9-IL8dog-c4gpkU69fn2BQ5w2LJj8VKcW67j2cyoG46sm_A22o6ZgACgYKAeESARASFQHGX2MiQmrnkQdFaLPKp4lg3Q_c9xoVAUF8yKqiOgEBE3cYRZXaPtxstI4x0076
+.google.com	TRUE	/	TRUE	1780670604	__Secure-3PSID	g.a000wQirXZEsFcVKymJ5Y9-IL8dog-c4gpkU69fn2BQ5w2LJj8VKwdbfuLM-t_icXxc7-1007QACgYKAccSARASFQHGX2MiECuSi6pTur0Pa_feD6qvARoVAUF8yKrbqsTvuJ1ZNv8TYuWVZ80j0076
+.google.com	TRUE	/	FALSE	1780670604	HSID	Av7GWDsLwHkSFe_rN
+.google.com	TRUE	/	TRUE	1780670604	SSID	ArL0d_6dVxuO37Syx
+.google.com	TRUE	/	FALSE	1780670604	APISID	kYqN_yKpxg1zgqaH/A3GNrhYJtiVtX2Dwo
+.google.com	TRUE	/	TRUE	1780670604	SAPISID	1Ua0af8ZbIylXe2q/AVwH3g4uVaMpGxd8b
+.google.com	TRUE	/	TRUE	1780670604	__Secure-1PAPISID	1Ua0af8ZbIylXe2q/AVwH3g4uVaMpGxd8b
+.google.com	TRUE	/	TRUE	1780670604	__Secure-3PAPISID	1Ua0af8ZbIylXe2q/AVwH3g4uVaMpGxd8b
+.google.com	TRUE	/	TRUE	1749983662	AEC	AVcja2cNvqtZjhH-QrbJDQTLXrRJAlLkYBskeXawAydFmvrYPIYTyRChP_0
+chromewebstore.google.com	FALSE	/	TRUE	1781428298	OSID	g.a000wwirXdNL-CQWEJiJEbSG3KO4LOpZP3mNBIUpD2FvnNVPNps8XN9aTXejxxxf8Fx7WGcaaQACgYKAUQSARASFQHGX2MiMY7OjVpdWVlgalt-89exDBoVAUF8yKr5iTtVa9Qzg5lH5N8Eh4G_0076
+chromewebstore.google.com	FALSE	/	TRUE	1781428298	__Secure-OSID	g.a000wwirXdNL-CQWEJiJEbSG3KO4LOpZP3mNBIUpD2FvnNVPNps8H_3ppOW6HMMwApIV42zpswACgYKAYMSARASFQHGX2Mi977mQLBd3PITFxKgEiKTGBoVAUF8yKpPrBsokUQJp77z3n1-uoEl0076
+chromewebstore.google.com	FALSE	/	TRUE	1749460299	OTZ	8076072_34_34__34_
+.google.com	TRUE	/	TRUE	1762598066	NID	524=VDBLPJQj1x6Xll75WH53GyYbURpNj0tIT87plWT2PbVzTb6fRvUq3cUY2rU4Zdo335Z07PhSf9C_FMr1aq8c3o7ydLr1iWukgkX-IrRIAjUC09Ge4zpFUatItSyfDupFGqUH3giUUNgkIbnd88N32AKMPlQa6s8e1PJgQO7pITGzBiIK8_XwNqM_skfqk5kDjn_7k9ZTp5vGS4eKrwvZJ8J_YyRJIuiYmw4R5CI3Re3fPv56LTKzRTNUeEpVyraEh5acS84wBsUqVeA3i4MlDBP8KMcgsYEeTjGoKPT_ldAAic9P3LdlCPn4TLRvMrqt8jPCcu02M3obetc0omZy4U0EWKUGiG9lwfEnw7PYqXPziTvCmFVMCNAq7MJcagDhyzju4FTTQ1W_M1bET2WoDmS_gLzbE0Hg7uplqZroKYtEbok0pJQN6ux--nUE3OU8FSMrlXu16DnNaHLJvTiI3av_Ct6j2CzQDp8hxbOp1qwP-rn0UCD8Sz7eD6Bm3BMgJZImhR5MK8jXb0Q0CC8DWnYu6J9UADOeVvkFdvsyv9hYh7Z9RLllv6tJHBsZSvtOvgHK7r_DX50xb1Ex-AJ6VJUNpRZRJ30MuDnt72RZdltfh2j-AzJCzHcpqbts1mXpy0IYdd9GkMBQA_J08XC1BmjPpU7tZe-VgV_M19PNS-VrbtfoFyv3YFkWgE2gqIrofVnYlI4RyfUYqf0kBRHI5qAfGUqB6GlW97NiB_O1h2VEUp1bfxISBpLzKmsV-BOnmYmkcATK6bZt5cRyEoukbL19pVE-sQBRQQrcSzM4J5ncRbubhmZRBP5WMGsAOj5LYBcbdTTpznGf5jXenaOEJXzXmQhYOkM8aRZ85cocNZQMonIYIYnhwCeUqgtP0bjM_JgkOXTBazzmV4LWrP38XBa84aicO5QkS4yWz9cRqr01exLKuvS0BT_6qBYYV38LV1Y1hxc_RKqg9jpaSqDkCUXorUGuGedFB_tYYQplYNxCSyfu11Apn58E0Sokh4S9wTBSK72S15Sfxmi-1Ny6i_3ab74kk40LGlO25sN6XRZq6ca676qzHrqxNGGZemD3BW7RLgg5K9JhdJDjtYa1ca8-qTkZTiC6b7aScWsB5soJd1FVqNMtaZYjgA5nS0joqNlQ82gfnEEWeLUy3tkO-wmo5INs5hWKz0B07MzaFvArzySwnLHvL2XF6DFMDM2cz4lKS6fm4GvVUFG3iG8KstRKJuOKCRdRNbXA6z_f_fmlhsuVNFReStHZc7Qw2fH4So5F1CFTcnpcy9CXBj4Sec8hO3xi8uvJWo9DX5790F67UCUCBzAD_PYpz8s5nnnJ-auxCvRh5lzRqmlV3lkhsLZ649hm4QvcspnN53iUVtTmxJl1dnMt4v0NXYu1PzTocraa5kTkh-dyOe6bsvD9SHzxAfW58fzj3UZtzg2M3CPQi29t669WBwK_81Dfzhs2ZKc6zRU_OfomUddpSYXzQPwpvUmBSQVcxbzRbuOnua8NsInf3XtIp0b3j9doaVM0WA8wlPp8bXNDHw3u5PhwFHFf_RG_vxX7SH9XNbhTmFWWKPd7rNSABVSGhMIUPxWNPyRbmsCNpG0tVKUfXkYxPfKPNNg7k1Iaxr7i6rOZ-a4kLwKGCEoj6I2HyCvYzHE5cwq6qQluWoDYrg-eQQQWp-Yrpp0SuH3XPS2maMpgz7jreQzM1iycrZMprqSqtY2FdkePylN_EtxAznZFkO4bQnd9s_rljWeFLtYXqhO3uemPFphSKl8iq8OyU0R-704Haeyhc8Opy5Ytti1v0ysIgP98jzhfkx2BWPg3OMCZ0CBDQzCSTXx6t9vQ5pTAxLzWT56t5YzT8Z9NVq2f2vubEHXLCfvudj_1jZtG3RSdVLgyeWCuTru2gVAzVMvYtuFSyYS9WluDEU4JOIkyc5ZK5kVfVwnOG2r7sEKL1tFu9MfjADZ0hqScQVr0-3-aAJ182i7gqljkPg48b6UT62B6rFlcjWLQnGyM4HdmuLGPbA5pVEBDbhrWDYAA36Q1K42lkw1lMrNRY6NlueHBSBMh88En_nPZbtCabBNV6NtX_lbrM3jsOVp8V-TM0yzM6-fjM_x4SRNz6X-RoUAC_iHtSRVmXq7Q41gvr-6lqh4cju-KLRnf_acYQIS9Whn7BBBtHWsOvJp89N8794dtUDJmh_DYV0BOyxEQYvCWIR0zRCLnObDpyynS82zGHN7RmmRnsYPdJAYix86Te6eLFuFY3goY4tS8LesehbmXVHAURJitRi6o5lMuVdJ5MhrjPYa89JfNUok8NQnbSKN3YTN-ZcHgkGXpsz5llUOZ7qjqqIhdNs1_t8rPwOwc9o6HDQA7jiXekypoGOvIGdJr-nZ7lNOIEia4ceL0Qv9kzGw1HNJqGpqOzZkWJ1XNsju2z_Mz8mgqk1YZef3XLkH2_CvRpK26DjDVPimKsp0lg7MH4VGdL6S5GDcyDvnvtR6BYW6GlI2x1y1f6-d2alezclP6mbaG297Xo9Z9muu379z0krfdVOarZiZrQ2aqQoEIMPaM79erXVIJjLqJVunueP2ZrP3sWrRAyffF3F4LAT8cw0vL1xpWmNXFS4Ho_SGH0yNvQ8pBJ3SgDbPb39KYiidsVCzlN63npD5tkwY2NBxlK7gA1kU5vLZp5iNwdgPC8G-uQpeQVlfDFA0cZwzxEvG0qsXXgTjg360lFXkikiqJLUIAb4syG-er22fWx7vZECV13UTBFvigaWIuox3odO8fcXdnvAaLuNk1tbhJnyY_JQ1OtuqvlcMRzqWbqIwCJOJOjBt_AlXhsqgyuV12jbwqY7YUNMXGMzFKuNRFCxn23TxC7nUDHo0CQdoDu0igPVnBYLUbgWpui1HeyeC8r0W2a_EEfg7_MwFJzhYxddHGqEAApNhhhmIrxg
+.chromewebstore.google.com	TRUE	/	FALSE	1781428320	_ga_C2WJL5J9RY	GS2.1.s1746868314$o1$g0$t1746868319$j0$l0$h0
+.google.com	TRUE	/	TRUE	1778405451	__Secure-1PSIDTS	sidts-CjIBjplskL7-tvDcx5hFUiNZmMjABM1rOCutgogjqBrwblTS9Nu0Zo_KWmVvjSoKMJEhBBAA
+.google.com	TRUE	/	TRUE	1778405451	__Secure-3PSIDTS	sidts-CjIBjplskL7-tvDcx5hFUiNZmMjABM1rOCutgogjqBrwblTS9Nu0Zo_KWmVvjSoKMJEhBBAA
+.chromewebstore.google.com	TRUE	/	FALSE	1781429765	_ga_KHZNC1Q6K0	GS2.1.s1746868299$o2$g1$t1746869764$j0$l0$h0
+.google.com	TRUE	/	FALSE	1778405785	SIDCC	AKEyXzWH3guyp-Jrh6Uouw-IQqW6-32wf0Bt_pQLCP1MIsem2ekNoCc_i75DUVAzKCBpL6xisRd5
+.google.com	TRUE	/	TRUE	1778405785	__Secure-1PSIDCC	AKEyXzV1tTfCoqAaMDkpym1K84aqIJ_ArPZVA_z9ZDVN_nVSsKgyFxl0d8sTm6m68mi_slA7yB4
+.google.com	TRUE	/	TRUE	1778405785	__Secure-3PSIDCC	AKEyXzVzC7kLS2EDo7g7QpSbbBNto6dLRdYZ0Y6Pr3z6MdbnnuPrhZhOndHBJHiQzBkXf5unYnVA
