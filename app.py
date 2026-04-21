@@ -23,27 +23,26 @@ def download():
 
     try:
         unique_id = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+        is_audio_only = video_format in ['mp3', 'aac', 'wav', 'm4a']
 
-        # ✅ Only change: /tmp instead of static/videos
-        video_filename = f"{platform}_{unique_id}.{video_format}"
+        ext = audio_format if (is_audio_only and audio_format != 'best') else video_format
+        video_filename = f"{platform}_{unique_id}.{ext}"
         output_path = os.path.join('/tmp', video_filename)
 
-        if video_quality != 'best':
-            format_selection = f'bestvideo[height<={video_quality}]+bestaudio/best[height<={video_quality}]'
+        # ✅ Always use pre-merged 'best' — no ffmpeg needed
+        if is_audio_only:
+            format_selection = 'bestaudio/best'
+        elif video_quality != 'best':
+            format_selection = f'best[height<={video_quality}]/best'
         else:
-            format_selection = 'bestvideo+bestaudio/best'
-
-        if audio_format != 'best' and video_format in ['mp3', 'aac', 'wav', 'm4a']:
-            format_selection = f'bestaudio/{audio_format}'
-            video_filename = f"{platform}_{unique_id}.{audio_format}"
-            output_path = os.path.join('/tmp', video_filename)
+            format_selection = 'best'
 
         ydl_opts = {
             'format': format_selection,
             'outtmpl': output_path,
             'quiet': True,
             'no_warnings': True,
-            'merge_output_format': video_format,
+            # ❌ Removed merge_output_format — nothing to merge
         }
 
         if platform == 'instagram':
@@ -54,7 +53,7 @@ def download():
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([video_url])
 
-        # yt-dlp sometimes changes the extension after merging, find the actual file
+        # yt-dlp may change extension after download, find actual file
         actual_path = output_path
         if not os.path.exists(actual_path):
             for f in os.listdir('/tmp'):
